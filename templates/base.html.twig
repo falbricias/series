@@ -5,6 +5,16 @@
         <title>{% block title %}Series !{% endblock %}</title>
     </head>
     <body>
+
+        <header>
+            {% include 'menu/nav.html.twig' %}
+        </header>
+
         {% block body %}Body par défaut{% endblock %}
+
+    <footer>
+        {% include 'menu/nav.html.twig'%}
+    </footer>
+
     </body>
 </html>
