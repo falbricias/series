@@ -1,32 +1,64 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html.twig' %}
+
+{% block body %}
 
     <h1>Test !</h1>
 
-    {# Création de variables #}
+    {# 1 - Création de variables #}
     {% set name = 'Arthur' %}
     {# Symbole de concaténacion #}
     <h2>Hola {{ name ~ " " ~ name }} !</h2>
     <h2>Hola {{ name }} {{ name }} !</h2>
 
-    {# Création d'un tableau #}
+    {# 2 - Création d'un tableau #}
     {% set colors = ['red', 'purple', 'green', 'yellow'] %}
+
     {% for color in colors %}
-    <div style="background-color: {{ color }}">{{ color }}</div>
+        <div style="background-color: {{ color }}">{{ color }}</div>
+        {# 3 - Usage de la boucle loop variable créée par for #}
+        {% if loop.first %}
+            <div>Première itération</div>
+        {% endif %}
+
+        {# index de l'élément #}
+        <div>Index de l'élément courant : {{ loop.index }} / {{ loop.length }}</div>
+
+        {% if loop.last %}
+            <div>dernière itération</div>
+        {% endif %}
+
+        {# si le tableau est vide => on passe dans le else #}
+    {% else %}
+        <div>Pas d'élément</div>
     {% endfor %}
 
 
+    {# 4 - Manipulation d'objets #}
+    {% set serie =
+        {
+            title : 'LOTR',
+            year : 2022,
+            plateform : 'Amazon'
+        }
+    %}
+
+    <h2>Titre de la série : {{ serie.title }}</h2>
+
+    {# Boucler sur un objet #}
+    {% for key, val in serie %}
+        <div>{{ key }} : {{ val }}</div>
+    {% endfor %}
 
 
+    {# 5 - Les filtres #}
 
+    <div>{{ name | upper | lower | capitalize }} : {{ name | length }} lettres</div>
+    <div>Taille du tableau : {{ colors | length }}</div>
+    <div>{{ colors | join (' - ')}}</div>
+    <div>{{ "now" | date ('d-m-Y')}}</div>
 
-</body>
-</html>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Test
+{% endblock %}
