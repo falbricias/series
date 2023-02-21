@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
@@ -11,6 +11,8 @@
         <title>{% block title %}Series !{% endblock %}</title>
     </head>
     <body>
+
+    <div class="container">
 
     <header>
         <h1>
@@ -21,11 +23,14 @@
         {% include 'menu/nav.html.twig' %}
     </header>
 
-    {% block body %}Body par défaut{% endblock %}
+    <main>
+        {% block body %}Body par défaut{% endblock %}
+    </main>
 
     <footer>
         {% include 'menu/nav.html.twig'%}
     </footer>
 
+    </div>
     </body>
 </html>

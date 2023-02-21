@@ -5,5 +5,18 @@
 
 {# sije redéfinis le contenu, j'écrase le contenu présent dans la base #}
 {% block body %}
-    <h1>Welcome to series !</h1>
+    <h1>Welcome to series {{ name }} !</h1>
+
+    {# Désactiver la protection XSS #}
+    <div>{{ name | raw }}</div>
+    {# Supprime complètement le code HTML #}
+    <div>{{ name | striptags }}</div>
+
+    <h2>Serie's detail</h2>
+    <ul>
+    {% for key,val in serie %}
+        <li>{{ key }} : {{ val }}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}
