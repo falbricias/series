@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SerieController extends AbstractController
 {
-    #[Route('/list', name: 'list')]
+    #[Route('/list', name: 'list', methods: 'GET')]
     public function list(): Response
     {
         //TODO Récupérer la listes des séries en DB
