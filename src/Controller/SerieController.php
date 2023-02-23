@@ -101,23 +101,26 @@ class SerieController extends AbstractController
 
         $serie = new Serie();
 
-        //Création d'une instance de form lié à une instance de Série
+        //1 - Création d'une instance de form lié à une instance de Série
         $serieForm = $this->createForm(SerieType::class, $serie);
 
-        //Méthode qui extrait les éléments du formulauire de la requête
+        //2 - Méthode qui extrait les éléments du formulauire de la requête
         $serieForm->handleRequest($request);
 
+        //3 - Traitement si le formulaire est soumis
         if ($serieForm->isSubmitted()){
-            //Sette manuellement la date de création
-            $serie->setDateCreated(new \DateTime());
-
             //Sauvegarde en DB la nouvelle série saisie par l'utilisateur
             $serieRepository->save($serie, true);
+
+            //Message flash d'info d'ajout de la série OK
+            $this->addFlash('success', 'Serie added !');
+
+            //Redirige vers la page de détail de la série
+            return $this->redirectToRoute('serie_show', ['id' => $serie->getId()]);
         }
 
         dump($serie);
 
-        //TODO Créer un formulaire d'ajout de série
         return $this->render('serie/add.html.twig', [
             'serieForm' => $serieForm->createView()
         ]);
