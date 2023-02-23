@@ -6,5 +6,31 @@
 
 {% block body %}
     <h2>Add a new serie !</h2>
+
+    {# Option 1 : Déclenche l'affichage du formulaire #}
+{#    {{ form(serieForm) }}       #}
+
+
+
+    {# Option 2 : Déclenche l'affichage du form de façon plus fine #}
+    {# Début du form #}
+    {{ form_start(serieForm) }}
+
+    <div class="machin">
+        {# Découpage par champ #}
+        {{ form_label(serieForm.name) }}
+        {{ form_widget(serieForm.name) }}
+        {{ form_errors(serieForm.name) }}
+    </div>
+
+    {# Affichage du reste du form #}
+    {{ form_rest(serieForm) }}
+
+    <button>Valider</button>
+
+    {# Fin du formulaire #}
+    {{ form_end(serieForm) }}
+
+
 {% endblock %}
 
