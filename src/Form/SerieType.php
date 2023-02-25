@@ -58,6 +58,7 @@ class SerieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Serie::class,
+            'required' => false
         ]);
     }
 }

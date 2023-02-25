@@ -67,48 +67,16 @@ class SerieController extends AbstractController
     #[Route('/add', name: 'add')]
     public function add(SerieRepository $serieRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
-//        $serie = new Serie();
-
-//        //Settage des infos de la série
-//        $serie
-//            ->setName("Le magicien")
-//            ->setBackdrop("backdrop.png")
-//            ->setDateCreated(new \DateTime())
-//            ->setGenres("Coemdy")
-//            ->setFirstAirDate(new \DateTime('2005-03-24'))
-//            ->setLastAirDate(new \DateTime('-6 month'))
-//            ->setPopularity(850.52)
-//            ->setPoster("poster.png")
-//            ->setTmdbId(123456)
-//            ->setVote(8.5)
-//            ->setStatus("ended");
-//
-//        //Utilisation directement de l'Entity Manager
-//        $entityManager->persist($serie);
-//        $entityManager->flush(false);
-
-//        dump($serie);
-//
-//        //Enregistrement de la série settée ci-dessus en DB
-//        $serieRepository->save($serie, false);
-//
-//        dump($serie);
-//
-//        $serie->setName('The last of us');
-//        $serieRepository->save($serie, true);
-//
-//        dump($serie);
-
         $serie = new Serie();
 
         //1 - Création d'une instance de form lié à une instance de Série
         $serieForm = $this->createForm(SerieType::class, $serie);
 
-        //2 - Méthode qui extrait les éléments du formulauire de la requête
+        //2 - Méthode qui extrait les éléments du formulaire de la requête
         $serieForm->handleRequest($request);
 
-        //3 - Traitement si le formulaire est soumis
-        if ($serieForm->isSubmitted()){
+        //3 - Traitement si le formulaire est soumis et valide (valide au regard des contraintes de validation des attributs de l'entité)
+        if ($serieForm->isSubmitted() && $serieForm->isValid()){
             //Sauvegarde en DB la nouvelle série saisie par l'utilisateur
             $serieRepository->save($serie, true);
 
