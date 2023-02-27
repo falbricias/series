@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SeasonRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Season
 {
     #[ORM\Id]
@@ -27,7 +28,7 @@ class Season
     private ?string $poster = null;
 
     #[ORM\Column]
-    private ?int $tmbdId = null;
+    private ?int $tmdbId = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreated = null;
@@ -92,14 +93,14 @@ class Season
         return $this;
     }
 
-    public function getTmbdId(): ?int
+    public function getTmdbId(): ?int
     {
-        return $this->tmbdId;
+        return $this->tmdbId;
     }
 
-    public function setTmbdId(int $tmbdId): self
+    public function setTmdbId(int $tmdbId): self
     {
-        $this->tmbdId = $tmbdId;
+        $this->tmdbId = $tmdbId;
 
         return $this;
     }
@@ -138,5 +139,10 @@ class Season
         $this->serie = $serie;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setNewSeason(){
+        $this->setDateCreated(new \DateTime());
     }
 }

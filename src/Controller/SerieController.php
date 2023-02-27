@@ -102,4 +102,20 @@ class SerieController extends AbstractController
         ]);
     }
 
+    #[Route('/remove/{id}', name: 'remove')]
+    public function remove(int $id, SerieRepository $serieRepository){
+        //Récupération de la série
+        $serie = $serieRepository->find($id);
+
+        if($serie){
+            //Suppression de la série si elle existe
+            $serieRepository->remove($serie, true);
+            $this->addFlash('warning', 'Serie deleted !');
+        }else{
+            throw $this->createNotFoundException('This serie cant be deleted !');
+        }
+
+        return $this->redirectToRoute('serie_list');
+    }
+
 }
