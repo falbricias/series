@@ -7,6 +7,7 @@ use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,6 +86,19 @@ class SerieController extends AbstractController
 
         //3 - Traitement si le formulaire est soumis et valide (valide au regard des contraintes de validation des attributs de l'entité)
         if ($serieForm->isSubmitted() && $serieForm->isValid()){
+
+            //Upload photo
+            /**
+             * @var UploadedFile $file
+             */
+            $file = $serieForm->get('poster')->getData();
+            //Détermine un nom au document téléchargé (avec un ID aléatoire généré + concat de l'extension)
+            $newFileName = $serie->getName() . '-' . uniqid() . '.' . $file->guessExtension();
+            //Déplace le fichier chargé dans le répertoire indiqué et renommé avec le $newFileName
+            $file->move('img/posters/series', $newFileName);
+            //Sauvegarde du nom du fichier en DB
+            $serie->setPoster($newFileName);
+
             //Sauvegarde en DB la nouvelle série saisie par l'utilisateur
             $serieRepository->save($serie, true);
 

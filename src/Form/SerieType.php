@@ -6,9 +6,11 @@ use App\Entity\Serie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SerieType extends AbstractType
@@ -49,7 +51,12 @@ class SerieType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('backdrop')
-            ->add('poster')
+            ->add('poster', FileType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new MimeTypes()
+                ]
+            ])
             ->add('tmdbId')
         ;
     }
