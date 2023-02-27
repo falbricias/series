@@ -49,20 +49,19 @@ class SerieController extends AbstractController
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
     public function show(int $id, SerieRepository $serieRepository): Response
     {
+        //récupération d'une série par son id
         $serie = $serieRepository->find($id);
 
         if(!$serie){
-            //Lance une erreur 404 si la série n'existe pas
-            throw $this->createNotFoundException('Oops ! This serie does not exist ! Not found exception !');
+            //lance une erreur 404 si la série n'existe pas
+            throw $this->createNotFoundException("Oops ! Serie not found !");
         }
 
-        dump($serie);
-
-        //TODO Récupération des infos de la série
         return $this->render('serie/show.html.twig', [
             'serie' => $serie
         ]);
     }
+
 
     #[Route('/add', name: 'add')]
     public function add(SerieRepository $serieRepository, EntityManagerInterface $entityManager, Request $request): Response
