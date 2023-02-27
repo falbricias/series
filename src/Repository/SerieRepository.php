@@ -16,6 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SerieRepository extends ServiceEntityRepository
 {
+    const SERIE_LIMIT = 50;
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Serie::class);
@@ -39,7 +42,14 @@ class SerieRepository extends ServiceEntityRepository
         }
     }
 
-    public function findBestSeries(){
+    public function findBestSeries(int $page){
+
+        // page 1 -> 0 à 49
+        // page 2 -> 50 à 99
+
+        $offset = ($page - 1) * self::SERIE_LIMIT;
+
+
         //1 - En DQL
         //Requête de récupération des séries avec un vote > 8 et une popularité > 100 ordonné par popularité
 //        $dql = 'SELECT s FROM App\Entity\Serie as s
@@ -54,14 +64,14 @@ class SerieRepository extends ServiceEntityRepository
 //        $query->setMaxResults(50);
 
 
-
         //2 - Même requête en QueryBuilder
         $qb = $this->createQueryBuilder('s');
         $qb
             ->addOrderBy('s.popularity', 'DESC')
-            ->andWhere('s.vote > 8')
-            ->andWhere('s.popularity > 100')
-            ->setMaxResults(50);
+//            ->andWhere('s.vote > 8')
+//            ->andWhere('s.popularity > 100')
+            ->setFirstResult($offset)
+            ->setMaxResults(self::SERIE_LIMIT);
 
         $query = $qb->getQuery(); //revoie une instance de Query
 

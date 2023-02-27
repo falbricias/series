@@ -16,12 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SerieController extends AbstractController
 {
-    #[Route('/list', name: 'list', methods: 'GET')]
-    public function list(SerieRepository $serieRepository): Response
+    #[Route('/list/{page}', name: 'list', requirements: ['page' => '\d+'], methods: 'GET')]
+    public function list(SerieRepository $serieRepository, int $page = 1): Response
     {
         //TODO Récupérer la liste des séries en DB
         //On récupère toutes les séries en passant par le repository
-        $series = $serieRepository->findAll();
+        //$series = $serieRepository->findAll();
 
         //On récupère toutes les séries de type comédie ET terminées (I.e en DB : colonne "status" = "ended" et colonne "genres" = "Comedy")
         //Utilisation de findBy avec un tableau de clause WHERE
@@ -35,25 +35,35 @@ class SerieController extends AbstractController
         //exemple 1 : $series = $serieRepository->findByName('The Office');
         //exemple 2 : $series = $serieRepository->findByStatus('ENDED');
 
-        //Appel de la requête stockée dans la méthode findBestSeries du Repository
-        $series = $serieRepository->findBestSeries();
+        //Compte le nombre de lignes de séries dans la table
+        $nbSerieMax = $serieRepository->count([]);
+        $maxPage = ceil($nbSerieMax / SerieRepository::SERIE_LIMIT);
+
+        if($page >= 1 && $page <= $maxPage){
+            //Appel de la requête stockée dans la méthode findBestSeries du Repository
+            $series = $serieRepository->findBestSeries($page);
+        } else{
+            throw $this->createNotFoundException('Oops ! Page not found !');
+        }
 
         dump($series);
 
         //On envoie les données récupérées à la vue (i.e : en second paramètre de la méthode render
         return $this->render('serie/list.html.twig', [
-            'series' => $series
+            'series' => $series,
+            'currentPage' => $page,
+            'maxPage' => $maxPage
         ]);
     }
 
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
     public function show(int $id, SerieRepository $serieRepository): Response
     {
-        //récupération d'une série par son id
+        //Récupération d'une série par son id
         $serie = $serieRepository->find($id);
 
         if(!$serie){
-            //lance une erreur 404 si la série n'existe pas
+            //Lance une erreur 404 si la série n'existe pas
             throw $this->createNotFoundException("Oops ! Serie not found !");
         }
 
@@ -61,7 +71,6 @@ class SerieController extends AbstractController
             'serie' => $serie
         ]);
     }
-
 
     #[Route('/add', name: 'add')]
     public function add(SerieRepository $serieRepository, EntityManagerInterface $entityManager, Request $request): Response
