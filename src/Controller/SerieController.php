@@ -6,6 +6,7 @@ use App\Entity\Serie;
 use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,8 +75,12 @@ class SerieController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
+    #[IsGranted("ROLE_USER")]
     public function add(SerieRepository $serieRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        //Renvoie une erreur 403
+        //$this->createAccessDeniedException('message');
+
         $serie = new Serie();
 
         //1 - Création d'une instance de form lié à une instance de Série
@@ -87,7 +92,7 @@ class SerieController extends AbstractController
         //3 - Traitement si le formulaire est soumis et valide (valide au regard des contraintes de validation des attributs de l'entité)
         if ($serieForm->isSubmitted() && $serieForm->isValid()){
 
-            //Upload photo
+            //Gestion de l'upload de photo d'une série nouvellement créée
             /**
              * @var UploadedFile $file
              */

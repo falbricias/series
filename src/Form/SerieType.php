@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\ImageValidator;
 
 class SerieType extends AbstractType
 {
@@ -54,7 +56,10 @@ class SerieType extends AbstractType
             ->add('poster', FileType::class, [
                 'mapped' => false,
                 'constraints' => [
-                    new MimeTypes()
+                    new Image([
+                        "maxSize" => '5000k',
+                        "mimeTypesMessage" => 'Image format not allowed !'
+                    ])
                 ]
             ])
             ->add('tmdbId')
