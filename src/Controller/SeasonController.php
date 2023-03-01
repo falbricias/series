@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/season', name: 'season')]
+#[Route('/season', name: 'season_')]
 class SeasonController extends AbstractController
 {
-    #[Route('/add', name: '_add')]
+    #[Route('/add', name: 'add')]
     public function add(Request $request, SeasonRepository $seasonRepository): Response
     {
         $season = new Season();

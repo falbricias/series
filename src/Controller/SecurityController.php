@@ -13,6 +13,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         //Permet de récupérer l'instance de l'user connecté côté back (dans tous les controllers)
+        //$this->getUser() accessible depuis tous les controleurs
          if ($this->getUser()) {
              return $this->redirectToRoute('serie_list');
          }

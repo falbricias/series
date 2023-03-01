@@ -19,9 +19,9 @@ class SeasonType extends AbstractType
         $builder
             ->add('number')
             ->add('firstAirDate', DateType::class, [
-                'label' => 'First air date',
                 'html5' => true,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'label' => 'First air date'
             ])
             ->add('overview')
             ->add('poster')
