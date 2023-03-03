@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    {{ parent() }} |404
+{% endblock %}
+
+{% block body %}
+    <h2>404 !</h2>
+    <h3>{{ exception.message }}</h3>
+
+{% endblock %}
+
+{% block styleCss %}
+    <style>
+        body{
+            background-image: linear-gradient(rgba(0,0,0, 0.8), rgba(0,0,0, 0.7)), url("{{ asset('img/erreur404logo.jpg') }}");
+        }
+    </style>
+{% endblock %}

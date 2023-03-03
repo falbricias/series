@@ -7,6 +7,12 @@
     <div class="flex_div">
         <a class="link_button" href="{{ path('serie_remove', {'id': serie.id}) }}"
            onclick="return confirm('Are you sure to delete this serie : {{ serie.name }} ')">Delete</a>
+
+        <div class="flex_div">
+            <button value="1" class="like_button">Like</button>
+            <button value="0" class="like_button">Dislike</button>
+            <span id="nbLike">{{ serie.nbLike }} </span> likes
+        </div>
     </div>
 
     <div class="serie-details">
@@ -49,4 +55,32 @@
             background-image: linear-gradient(rgba(0,0,0, 0.8), rgba(0,0,0, 0.5)), url("{{ asset('img/backdrops/' ~ serie.backdrop)}}");
         }
     </style>
+{% endblock %}
+
+{% block js %}
+    <script>
+        //Récupération des boutons
+        let buttons = Array.from(document.getElementsByClassName('like_button'))
+
+        //Boucle sur les boutons
+        buttons.forEach(function (elem){
+
+            //Ajout d'événement
+            elem.addEventListener('click', function (){
+
+                //Préparation des données à envoyer
+                let data = {like: this.value};
+
+                //Appel asynchrone
+                fetch('{{ path('api_serie_update', {'id' : serie.id}) }}',
+                    {method: 'PUT', body: JSON.stringify(data)})
+                    .then(function (response){
+                        return response.json()
+                    }).then(function (data){
+                        console.log(data)
+                        document.getElementById('nbLike').innerText = data.nbLike
+                })
+            })
+        })
+    </script>
 {% endblock %}

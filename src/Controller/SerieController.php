@@ -49,8 +49,6 @@ class SerieController extends AbstractController
             throw $this->createNotFoundException('Oops ! Page not found !');
         }
 
-        dump($series);
-
         //On envoie les données récupérées à la vue (i.e : en second paramètre de la méthode render
         return $this->render('serie/list.html.twig', [
             'series' => $series,
@@ -120,8 +118,6 @@ class SerieController extends AbstractController
             //Redirige vers la page de détail de la série
             return $this->redirectToRoute('serie_show', ['id' => $serie->getId()]);
         }
-
-        dump($serie);
 
         return $this->render('serie/add.html.twig', [
             'serieForm' => $serieForm->createView()
