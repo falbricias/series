@@ -25,6 +25,8 @@ class SeasonController extends AbstractController
         //2 - Méthode qui extrait les éléments du formulaire de la requête
         $seasonForm->handleRequest($request);
 
+
+
         //3 - Traitement si le formulaire est soumis et valide (valide au regard des contraintes de validation des attributs de l'entité)
         if($seasonForm->isSubmitted() && $seasonForm->isValid()){
             //Sauvegarde en DB la nouvelle série saisie par l'utilisateur
@@ -42,4 +44,5 @@ class SeasonController extends AbstractController
             'seasonForm' => $seasonForm->createView()
         ]);
     }
+
 }

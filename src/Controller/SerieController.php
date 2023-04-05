@@ -49,7 +49,7 @@ class SerieController extends AbstractController
             throw $this->createNotFoundException('Oops ! Page not found !');
         }
 
-        //On envoie les données récupérées à la vue (i.e : en second paramètre de la méthode render
+        //On envoie les données récupérées à la vue (i.e : en second paramètre de la méthode render)
         return $this->render('serie/list.html.twig', [
             'series' => $series,
             'currentPage' => $page,
@@ -68,6 +68,7 @@ class SerieController extends AbstractController
             throw $this->createNotFoundException("Oops ! Serie not found !");
         }
 
+        //Envoie les données de la série correspondant à l'id sélectionné
         return $this->render('serie/show.html.twig', [
             'serie' => $serie
         ]);
@@ -136,7 +137,6 @@ class SerieController extends AbstractController
         }else{
             throw $this->createNotFoundException('This serie cant be deleted !');
         }
-
         return $this->redirectToRoute('serie_list');
     }
 
